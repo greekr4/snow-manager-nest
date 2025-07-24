@@ -1,0 +1,853 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model apilog {
+  id           String   @id
+  method       String
+  path         String
+  statusCode   Int
+  requestBody  String?  @db.Text
+  responseBody String?  @db.Text
+  userId       String?
+  duration     Int?
+  userAgent    String?  @db.Text
+  ip           String?
+  timestamp    DateTime @default(now())
+
+  @@index([timestamp], map: "ApiLog_timestamp_idx")
+  @@index([userId], map: "ApiLog_userId_idx")
+}
+
+model apilog_admin {
+  id           String   @id
+  method       String
+  path         String
+  statusCode   Int
+  requestBody  String?  @db.LongText
+  responseBody String?  @db.LongText
+  userId       String?
+  duration     Int?
+  userAgent    String?  @db.LongText
+  ip           String?
+  timestamp    DateTime @default(now())
+
+  @@index([timestamp], map: "ApiLog_timestamp_idx")
+  @@index([userId], map: "ApiLog_userId_idx")
+}
+
+model apilog_lab {
+  id           String   @id
+  method       String
+  path         String
+  statusCode   Int
+  requestBody  String?  @db.Text
+  responseBody String?  @db.Text
+  userId       String?
+  duration     Int?
+  userAgent    String?  @db.Text
+  ip           String?
+  timestamp    DateTime @default(now())
+
+  @@index([timestamp], map: "ApiLog_timestamp_idx")
+  @@index([userId], map: "ApiLog_userId_idx")
+}
+
+model dogwang {
+  key      String  @id @db.VarChar(100)
+  cheacter String? @db.VarChar(100)
+  hp       Int?
+  maxhp    Int?
+}
+
+model dogwang_log {
+  key     String    @id @db.VarChar(100)
+  log     String?   @db.VarChar(100)
+  regdate DateTime? @db.DateTime(0)
+}
+
+model editor_log {
+  id         String   @id @db.VarChar(20)
+  userId     String?  @db.VarChar(255)
+  userEmail  String?  @db.VarChar(100)
+  itemSid    String?  @db.VarChar(100)
+  editorData Json?
+  procType   String?  @db.VarChar(10)
+  ip         String?  @db.VarChar(20)
+  timestamp  DateTime @default(now()) @db.DateTime(0)
+}
+
+model fishing_item {
+  SID           String  @id @db.VarChar(100)
+  USER_ID       String? @db.VarChar(100)
+  ITEM_NAME     String? @db.VarChar(100)
+  ITME_IMG      String? @db.Text
+  ITEM_POWER    Int?
+  ITEM_ACCURACY Int?
+}
+
+model fishing_log {
+  sid     String    @id @db.VarChar(100)
+  msg     String?   @db.VarChar(100)
+  regdate DateTime? @db.DateTime(0)
+}
+
+model fishing_user {
+  USER_ID          String  @id @db.VarChar(100)
+  USER_PW          String? @db.VarChar(100)
+  USER_LV          Int?    @default(1)
+  USER_EXP         Int?    @default(0)
+  USER_FISHING_CNT Int?    @default(0)
+}
+
+model tb_ai_chat_history {
+  CHAT_SID            String   @id @db.VarChar(100)
+  CHAT_USER_ID        String?  @db.VarChar(100)
+  CHAT_USER_EMAIL     String?  @db.VarChar(100)
+  CHAT_MESSAGE        String   @db.Text
+  CHAT_AI_RESPONSE    String   @db.Text
+  CHAT_KNOWLEDGE_USED Json?
+  CHAT_SESSION_ID     String?  @db.VarChar(100)
+  CHAT_REGDATE        DateTime @default(now()) @db.DateTime(0)
+  CHAT_IP             String?  @db.VarChar(50)
+
+  @@index([CHAT_REGDATE], map: "idx_chat_regdate")
+  @@index([CHAT_SESSION_ID], map: "idx_chat_session_id")
+  @@index([CHAT_USER_ID], map: "idx_chat_user_id")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tb_ai_images {
+  AI_IMAGE_SID     String    @db.VarChar(100)
+  AI_IMAGE_USER_ID String?   @db.VarChar(100)
+  AI_IMAGE_FILE    String?   @db.VarChar(100)
+  AI_IMAGE_REGDATE DateTime? @db.DateTime(0)
+
+  @@ignore
+}
+
+model tb_ai_knowledge {
+  KNOWLEDGE_SID      String    @id @db.VarChar(100)
+  KNOWLEDGE_CATEGORY String    @db.VarChar(50)
+  KNOWLEDGE_TITLE    String    @db.VarChar(255)
+  KNOWLEDGE_CONTENT  String    @db.Text
+  KNOWLEDGE_KEYWORDS String    @db.Text
+  KNOWLEDGE_STATUS   String    @default("Y") @db.VarChar(1)
+  KNOWLEDGE_PRIORITY Int       @default(0)
+  KNOWLEDGE_REGDATE  DateTime  @default(now()) @db.DateTime(0)
+  KNOWLEDGE_MODDATE  DateTime? @db.DateTime(0)
+  KNOWLEDGE_REG_USER String?   @db.VarChar(100)
+  KNOWLEDGE_MOD_USER String?   @db.VarChar(100)
+
+  @@index([KNOWLEDGE_CATEGORY], map: "idx_knowledge_category")
+  @@index([KNOWLEDGE_PRIORITY], map: "idx_knowledge_priority")
+  @@index([KNOWLEDGE_STATUS], map: "idx_knowledge_status")
+}
+
+model tb_banner {
+  BANNER_SID      Int     @id @default(autoincrement())
+  BANNER_CATE     String? @db.VarChar(255)
+  BANNER_CODE     String? @db.VarChar(255)
+  BANNER_IMAGE    String? @db.VarChar(255)
+  BANNER_PRIORITY Int?
+  BANNER_ONCLICK  String? @db.Text
+}
+
+model tb_board {
+  BOARD_SID      String    @id @db.VarChar(255)
+  USER_ID        String    @db.VarChar(255)
+  BOARD_WRITER   String?   @db.VarChar(20)
+  BOARD_TITLE    String?   @db.VarChar(255)
+  BOARD_CONTENT  String?   @db.Text
+  BOARD_FILE     String?   @db.Text
+  BOARD_HIT      Int?
+  BOARD_REGDATE  DateTime? @db.DateTime(0)
+  BOARD_MODIDATE DateTime? @db.DateTime(0)
+  BOARD_TYPE     String?   @db.VarChar(20)
+  BOARD_DELETE   String    @default("N") @db.VarChar(1)
+  BOARD_TEL      String?   @db.VarChar(100)
+}
+
+model tb_cart {
+  CART_SID      String    @id @db.VarChar(255)
+  ITEM_SID      String    @db.VarChar(255)
+  USER_ID       String    @db.VarChar(255)
+  USER_EMAIL    String?   @db.VarChar(100)
+  CART_STATUS   Int?
+  CART_REGDATE  DateTime? @db.DateTime(0)
+  CART_MODIDATE DateTime? @db.DateTime(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tb_cashbill {
+  mgtKey            String? @db.VarChar(100)
+  tradeType         String? @db.VarChar(10)
+  orgConfirmNum     String? @db.VarChar(100)
+  orgTradeDate      String? @db.VarChar(20)
+  taxationType      String? @db.VarChar(10)
+  tradeUsage        String? @db.VarChar(10)
+  tradeOpt          String? @db.VarChar(10)
+  identityNum       String? @db.VarChar(20)
+  franchiseCorpNum  String? @db.VarChar(20)
+  franchiseTaxRegID String? @db.VarChar(20)
+  franchiseCorpName String? @db.VarChar(20)
+  franchiseCEOName  String? @db.VarChar(10)
+  franchiseAddr     String? @db.VarChar(100)
+  franchiseTEL      String? @db.VarChar(20)
+  supplyCost        String? @db.VarChar(100)
+  tax               String? @db.VarChar(100)
+  serviceFee        String? @db.VarChar(100)
+  totalAmount       String? @db.VarChar(100)
+  customerName      String? @db.VarChar(10)
+  itemName          String? @db.VarChar(50)
+  orderNumber       String? @db.VarChar(100)
+  email             String? @db.VarChar(100)
+  hp                String? @db.VarChar(20)
+  fax               String? @db.VarChar(20)
+  statement         String? @db.VarChar(10)
+  stateMemo         String? @db.VarChar(100)
+
+  @@ignore
+}
+
+model tb_category {
+  CATE_SID           String  @id @db.VarChar(255)
+  CATE_NM            String? @db.VarChar(255)
+  CATE_PID           String? @db.VarChar(255)
+  CATE_LINK          String? @db.VarChar(100)
+  CATE_SHOW          Int?    @default(1)
+  CATE_PRIORITY      Int?
+  CATE_NEW           String? @db.VarChar(1)
+  CATE_HOT           String? @db.VarChar(1)
+  SEO_TITLE          String? @db.VarChar(100)
+  SEO_DESC           String? @db.VarChar(100)
+  SEO_KEYWORDS       String? @db.VarChar(100)
+  SEO_IMAGE_NAME     String? @db.VarChar(100)
+  SEO_IMAGE_LOCATION String? @db.LongText
+  SEO_IMAGE_WIDTH    Int?
+  SEO_IMAGE_HEIGHT   Int?
+  SEO_PRICE          Int?
+
+  @@index([CATE_PID], map: "FK_TB_CATEGORY_TO_TB_CATEGORY_1")
+}
+
+model tb_comment {
+  COMMENT_SID      String    @id @db.VarChar(255)
+  BOARD_SID        String    @db.VarChar(255)
+  USER_ID          String    @db.VarChar(255)
+  COMMENT_WRITER   String?   @db.VarChar(20)
+  COMMENT_TITLE    String?   @db.VarChar(255)
+  COMMENT_CONTENT  String?   @db.Text
+  COMMENT_FILE     String?   @db.Text
+  COMMNET_HIT      Int?
+  COMMENT_REGDATE  DateTime? @db.DateTime(0)
+  COMMENT_MODIDATE DateTime? @db.DateTime(0)
+  COMMENT_DELETE   String    @default("N") @db.VarChar(1)
+}
+
+model tb_custom_prod {
+  ITEM_SID             String    @id @db.VarChar(255)
+  PROD_SID             String    @db.VarChar(255)
+  ITEM_OPTION          String?   @db.Text
+  ITEM_QUANTITY        Int?
+  ITEM_AMOUNT          Int?
+  ITEM_REGDATE         DateTime? @db.DateTime(0)
+  ITEM_MODIDATE        DateTime? @db.DateTime(0)
+  ITEM_DESIGN          Json?
+  USER_ID              String?   @db.VarChar(255)
+  ITEM_FILE_NAME       String?   @db.VarChar(255)
+  ITEM_FILE_LOCATION   String?   @db.VarChar(255)
+  ITEM_STATUS          Int?      @default(1)
+  ITEM_WIDTH           Int?
+  ITEM_HEIGHT          Int?
+  ITEM_COUNT           Int?
+  ITEM_IMPOSITION      Int?
+  ITEM_PAPER_CNT       Int?
+  ITEM_DISCOUNT_BEFORE Int?
+}
+
+model tb_delivery_address {
+  DELI_CODE        Int     @default(autoincrement())
+  USER_ID          String  @db.VarChar(255)
+  DELI_NM          String? @db.VarChar(255)
+  DELI_POSTCODE    String? @db.VarChar(10)
+  DELI_ADDRESS     String? @db.VarChar(100)
+  DELI_TEL0        String? @db.VarChar(20)
+  DELI_TEL1        String? @db.VarChar(20)
+  DELI_FAVO        Int?
+  DELI_REC         String? @db.VarChar(20)
+  DELI_ADD_ADDRESS String? @db.VarChar(100)
+
+  @@id([DELI_CODE, USER_ID])
+  @@index([USER_ID], map: "FK_TB_USER_TO_TB_DELIVERY_ADDRESS_1")
+}
+
+model tb_editor_file {
+  FILE_ID            String    @id @db.VarChar(255)
+  USER_ID            String?   @db.VarChar(255)
+  USER_EMAIL         String?   @db.VarChar(255)
+  FILE_NAME          String?   @db.VarChar(255)
+  FILE_LOCATION      String?   @db.VarChar(255)
+  FILE_REAL_LOCATION String?   @db.VarChar(255)
+  FILE_TYPE          String?   @db.VarChar(50)
+  FILE_SIZE          BigInt?
+  FILE_ORDER         Int?
+  GENERATION_TYPE    String?   @db.VarChar(100)
+  PROMPT             String?   @db.Text
+  UPLOAD_DATE        DateTime? @db.DateTime(0)
+}
+
+model tb_email_auth {
+  AUTH_EMAIL String  @id @db.VarChar(255)
+  AUTH_CODE  String? @db.VarChar(6)
+}
+
+model tb_erp_paper {
+  paper_id    String    @id @db.VarChar(100)
+  name        String?   @db.VarChar(100)
+  description String?   @db.Text
+  etc         String?   @db.Text
+  regdate     DateTime? @db.DateTime(0)
+  delete      String    @default("N") @db.VarChar(1)
+  gram        Int?
+}
+
+model tb_erp_paper_stock {
+  stock_id String    @id @db.VarChar(100)
+  paper_id String?   @db.VarChar(100)
+  qty      Float?
+  regdate  DateTime? @db.DateTime(0)
+
+  @@index([paper_id], map: "tb_erp_paper_stock_tb_erp_paper_FK")
+}
+
+model tb_erp_paper_stock_history {
+  history_id  String    @id @db.VarChar(100)
+  paper_id    String?   @db.VarChar(100)
+  change_type String?   @db.VarChar(100)
+  qty         Int?
+  etc         String?   @db.Text
+  regdate     DateTime? @db.DateTime(0)
+
+  @@index([paper_id], map: "tb_erp_paper_stock_history_tb_erp_paper_FK")
+}
+
+model tb_glob_price {
+  PRICE_SID         String    @id @db.VarChar(255)
+  PRICE_PROD_CATE   String?   @db.VarChar(20)
+  PRICE_OPTION_CATE String?   @db.VarChar(20)
+  PRICE_OPTION_NM   String?   @db.VarChar(50)
+  PRICE_QTY         Int?
+  PRICE_PRICE       Float?
+  PRICE_REGDATE     DateTime? @db.DateTime(0)
+  PRICE_MODIDATE    DateTime? @db.DateTime(0)
+  PRICE_ORDER       Int?
+}
+
+model tb_inquiries {
+  INQUIRIES_SID        String    @id @db.VarChar(255)
+  INQUIRIES_USER_ID    String?   @db.VarChar(255)
+  INQUIRIES_USER_EMAIL String?   @db.VarChar(255)
+  INQUIRIES_TITLE      String?   @db.VarChar(100)
+  INQUIRIES_CONTENT    String?   @db.Text
+  INQUIRIES_STATUS     String?   @db.VarChar(20)
+  INQUIRIES_REGDATE    DateTime? @db.DateTime(0)
+  INQUIRIES_MODIDATE   DateTime? @db.DateTime(0)
+}
+
+model tb_inquiries_answer {
+  INQUIRIES_ANSWER_SID      String    @id @db.VarChar(255)
+  INQUIRIES_SID             String?   @db.VarChar(255)
+  INQUIRIES_ANSWER_ID       String?   @db.VarChar(255)
+  INQUIRIES_ANSWER_CONTENT  String?   @db.Text
+  INQUIRIES_ANSWER_REGDATE  DateTime? @db.DateTime(0)
+  INQUIRIES_ANSWER_MODIDATE DateTime? @db.DateTime(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tb_log {
+  LEVEL       String?   @db.VarChar(100)
+  MESSAGE     String?   @db.VarChar(100)
+  CONTEXT     String?   @db.Text
+  USER_ID     String?   @db.VarChar(100)
+  IP_ADDRESS  String?   @db.VarChar(100)
+  USER_AGENT  String?   @db.Text
+  REQUEST_URL String?   @db.VarChar(100)
+  STATUS_CODE String?   @db.VarChar(100)
+  REGDATE     DateTime? @db.DateTime(0)
+
+  @@ignore
+}
+
+model tb_new_custom_item {
+  ITEM_SID                String   @id @db.VarChar(255)
+  USER_ID                 String?  @db.VarChar(255)
+  USER_EMAIL              String   @db.VarChar(255)
+  PROD_SID                String   @db.VarChar(255)
+  PROD_OPTION             String   @db.Text
+  ITEM_PAPER_PRICE        Int
+  ITEM_PRINT_PRICE        Int
+  ITEM_CUTTING_PRICE      Int
+  ITEM_BINDING_PRICE      Int
+  ITEM_FINISHING_PRICE    Int
+  ITEM_TOTAL_PRICE        Int
+  ITEM_DISCOUNTED_PRICE   Int
+  ITEM_NODISCOUNTED_PRICE Int?
+  ITEM_QTY                Int
+  ITEM_CNT                Int
+  ITEM_WIDTH              Int?
+  ITEM_HEIGHT             Int?
+  ITEM_IMPOSITION         Int?
+  ITEM_PAPER_CNT          Int?
+  ITEM_WEIGHT             Float?
+  ITEM_EDITOR_YN          String?  @default("N") @db.VarChar(1)
+  ITEM_EDITOR_DATA        String?  @db.LongText
+  ITEM_REGDATE            DateTime @default(now()) @db.DateTime(0)
+  ITEM_MODIDATE           DateTime @default(now()) @db.DateTime(0)
+}
+
+model tb_new_custom_item_files {
+  FILE_ID            String    @id @db.VarChar(255)
+  ITEM_SID           String?   @db.VarChar(255)
+  FILE_NAME          String?   @db.VarChar(255)
+  FILE_LOCATION      String?   @db.VarChar(255)
+  FILE_REAL_LOCATION String?   @db.VarChar(255)
+  FILE_TYPE          String?   @db.VarChar(50)
+  FILE_SIZE          BigInt?
+  FILE_ORDER         Int?
+  UPLOAD_DATE        DateTime? @db.DateTime(0)
+
+  @@index([ITEM_SID], map: "ITEM_SID")
+}
+
+model tb_new_glob_price {
+  GLOB_PRICE_SID       String    @id @db.VarChar(255)
+  GLOB_PRICE_CATE      String?   @db.VarChar(20)
+  GLOB_PRICE_LV1       String?   @db.VarChar(50)
+  GLOB_PRICE_LV2       String?   @db.VarChar(50)
+  GLOB_PRICE_PRICE     Float?
+  GLOB_PRICE_MIN_PRICE Float?
+  GLOB_PRICE_ORDER     Int?
+  GLOB_PRICE_UNIT      String?   @db.VarChar(100)
+  GLOB_PRICE_REGDATE   DateTime? @db.DateTime(0)
+  GLOB_PRICE_MODIDATE  DateTime? @db.DateTime(0)
+}
+
+model tb_new_review {
+  review_id      String    @id @db.VarChar(100)
+  review_author  String?   @db.VarChar(20)
+  review_rating  Int?
+  review_content String?   @db.Text
+  review_tags    String?   @db.VarChar(100)
+  prod_sid       String?   @db.VarChar(255)
+  review_show    String?   @default("Y") @db.VarChar(1)
+  review_date    DateTime? @db.DateTime(0)
+}
+
+model tb_new_review_images {
+  FILE_ID            String    @id @db.VarChar(255)
+  REVIEW_ID          String?   @db.VarChar(255)
+  FILE_NAME          String?   @db.VarChar(255)
+  FILE_LOCATION      String?   @db.VarChar(255)
+  FILE_REAL_LOCATION String?   @db.VarChar(255)
+  FILE_TYPE          String?   @db.VarChar(50)
+  FILE_SIZE          BigInt?
+  FILE_ORDER         Int?
+  UPLOAD_DATE        DateTime? @db.DateTime(0)
+}
+
+model tb_noti {
+  NOTI_SID     String    @id @db.VarChar(255)
+  NOTI_UID     String    @db.VarChar(255)
+  NOTI_WRITER  String?   @db.VarChar(20)
+  NOTI_TITLE   String?   @db.VarChar(255)
+  NOTI_CONTENT String?   @db.Text
+  NOTI_FILE    String?   @db.Text
+  NOTI_REGDATE DateTime? @db.DateTime(0)
+  NOTI_HIT     Int?
+
+  @@index([NOTI_UID], map: "FK_TB_USER_TO_TB_NOTI_1")
+}
+
+model tb_option {
+  OPTION_SID      String    @id @db.VarChar(255)
+  OPTION_CATE     String?   @db.VarChar(255)
+  OPTION_NM       String?   @db.VarChar(255)
+  OPTION_DETAIL   String?   @db.Text
+  OPTION_PRICE    String?   @db.Text
+  OPTION_REGDATE  DateTime? @db.DateTime(0)
+  OPTION_MODIDATE DateTime? @db.DateTime(0)
+  OPTION_DELETE   String?   @default("N") @db.VarChar(1)
+  OPTION_QTY      String?   @db.Text
+}
+
+model tb_option_price {
+  OPTION_SID         String    @id @db.VarChar(255)
+  OPTION_NM          String?   @db.VarChar(255)
+  OPTION_DETAIL      String?   @db.VarChar(255)
+  OPTION_DEFAULT_QTY Int?
+  OPTION_DEFAULT_AMT Int?
+  OPTION_ADD_QTY     Int?
+  OPTION_ADD_AMT     Int?
+  OPTION_ETC         String?   @db.VarChar(255)
+  OPTION_REGDATE     DateTime? @db.DateTime(0)
+  OPTION_MODIDATE    DateTime? @db.DateTime(0)
+  OPTION_DELETE      String?   @default("N") @db.VarChar(1)
+}
+
+model tb_order {
+  ORDER_SID                String    @id @db.VarChar(255)
+  USER_ID                  String    @db.VarChar(255)
+  USER_EMAIL               String?   @db.VarChar(255)
+  ITEM_SIDS                String?   @db.Text
+  ORDER_DATE               DateTime? @db.DateTime(0)
+  ORDER_PAYMENT_DATE       DateTime? @db.DateTime(0)
+  ORDER_AMOUNT             Int?
+  ORDER_VOS                Int?
+  ORDER_VAT                Int?
+  ORDER_LOGIS_AMT          Int?      @default(3000)
+  ORDER_USE_POINT          Int?
+  ORDER_STATUS             Int?
+  ORDER_REC                String?   @db.VarChar(100)
+  REC_TEL                  String?   @db.VarChar(100)
+  ORDER_REQ                String?   @db.VarChar(100)
+  ORDER_POSTCODE           String?   @db.VarChar(10)
+  ORDER_ADDRESS            String?   @db.VarChar(100)
+  ORDER_ADD_ADDRESS        String?   @db.VarChar(100)
+  ORDER_TITLE              String?   @db.VarChar(100)
+  ORDER_MEMO               String?   @db.Text
+  ORDER_NM                 String?   @db.VarChar(255)
+  ORDER_TEL                String?   @db.VarChar(100)
+  ORDER_PAYMENT_TYPE       String?   @db.VarChar(10)
+  ORDER_REVIEW             String?   @default("N") @db.VarChar(2)
+  ORDER_CORE_PROD          String?   @db.VarChar(255)
+  ORDER_CORE_OPTION        String?   @db.VarChar(255)
+  ORDER_CORE_PROD_SID      String?   @db.VarChar(255)
+  ORDER_CORE_PROD_CATECODE String?   @db.VarChar(255)
+  PG_ORDERID               String?   @db.VarChar(255)
+  PG_PAYMENT_KEY           String?   @db.VarChar(255)
+  PG_PAYMENT_TYPE          String?   @db.VarChar(255)
+  PG_PAYMENT_AMOUNT        String?   @db.VarChar(255)
+  ORDER_LOGIS_NM           String?   @db.VarChar(20)
+  ORDER_LOGIS_NO           String?   @db.VarChar(20)
+  CASH_RECEIPT_TYPE        String?   @db.VarChar(10)
+  CASH_RECEIPT_NO          String?   @db.VarChar(20)
+  CASH_DEPOSITOR_NAME      String?   @db.VarChar(20)
+  CASH_RECEIPT_STATUS      String?   @default("N") @db.VarChar(1)
+  ORDER_HOLD_REASON        String?   @default("") @db.VarChar(255)
+  ORDER_HOLD_FILE_NAME     String?   @db.VarChar(255)
+  ORDER_HOLD_FILE_LOCATION String?   @db.VarChar(255)
+  ORDER_ADMIN_MEMO         String?   @db.Text
+}
+
+model tb_order_new_req {
+  ORDER_SID                String    @id @db.VarChar(255)
+  USER_ID                  String    @db.VarChar(255)
+  USER_EMAIL               String    @db.VarChar(255)
+  ITEM_SIDS                String?   @db.Text
+  ORDER_DATE               DateTime? @db.DateTime(0)
+  ORDER_AMOUNT             Int?
+  ORDER_VOS                Int?
+  ORDER_VAT                Int?
+  ORDER_LOGIS_AMT          Int?      @default(3000)
+  ORDER_USE_POINT          Int?
+  ORDER_STATUS             Int?
+  ORDER_REC                String?   @db.VarChar(100)
+  REC_TEL                  String?   @db.VarChar(100)
+  ORDER_REQ                String?   @db.VarChar(100)
+  ORDER_POSTCODE           String?   @db.VarChar(10)
+  ORDER_ADDRESS            String?   @db.VarChar(100)
+  ORDER_ADD_ADDRESS        String?   @db.VarChar(100)
+  ORDER_TITLE              String?   @db.VarChar(100)
+  ORDER_MEMO               String?   @db.Text
+  ORDER_NM                 String?   @db.VarChar(255)
+  ORDER_TEL                String?   @db.VarChar(100)
+  ORDER_PAYMENT_TYPE       String?   @db.VarChar(10)
+  ORDER_PAYMENT_DATE       DateTime? @db.DateTime(0)
+  ORDER_REVIEW             String?   @default("N") @db.VarChar(2)
+  ORDER_CORE_PROD          String?   @db.VarChar(255)
+  ORDER_CORE_OPTION        String?   @db.VarChar(255)
+  ORDER_CORE_PROD_SID      String?   @db.VarChar(255)
+  ORDER_CORE_PROD_CATECODE String?   @db.VarChar(255)
+  PG_STATUS                String?   @db.VarChar(100)
+  PG_ORDERID               String?   @db.VarChar(255)
+  PG_PAYMENT_KEY           String?   @db.VarChar(255)
+  PG_PAYMENT_TYPE          String?   @db.VarChar(255)
+  PG_PAYMENT_AMOUNT        String?   @db.VarChar(255)
+  ORDER_LOGIS_NM           String?   @db.VarChar(20)
+  ORDER_LOGIS_NO           String?   @db.VarChar(20)
+  CASH_RECEIPT_TYPE        String?   @db.VarChar(10)
+  CASH_RECEIPT_NO          String?   @db.VarChar(20)
+  CASH_DEPOSITOR_NAME      String?   @db.VarChar(20)
+  CASH_RECEIPT_STATUS      String?   @default("N") @db.VarChar(1)
+  ORDER_HOLD_REASON        String?   @default("") @db.VarChar(255)
+  ORDER_HOLD_FILE_NAME     String?   @db.VarChar(255)
+  ORDER_HOLD_FILE_LOCATION String?   @db.VarChar(255)
+  ORDER_ADMIN_MEMO         String?   @db.Text
+}
+
+model tb_order_req {
+  ORDER_SID                String    @id @db.VarChar(255)
+  USER_ID                  String    @db.VarChar(255)
+  ITEM_SIDS                String?   @db.VarChar(255)
+  ORDER_DATE               DateTime? @db.DateTime(0)
+  ORDER_AMOUNT             Int?
+  ORDER_STATUS             Int?
+  ORDER_REC                String?   @db.VarChar(100)
+  REC_TEL                  String?   @db.VarChar(100)
+  ORDER_POSTCODE           String?   @db.VarChar(10)
+  ORDER_ADDRESS            String?   @db.VarChar(100)
+  ORDER_ADD_ADDRESS        String?   @db.VarChar(100)
+  ORDER_REQ                String?   @db.VarChar(100)
+  ORDER_PAYMENT_TYPE       String?   @db.VarChar(10)
+  ORDER_PAYMENT_DATE       DateTime? @db.DateTime(0)
+  ORDER_REVIEW             String?   @default("N") @db.VarChar(2)
+  ORDER_CORE_PROD          String?   @db.VarChar(255)
+  ORDER_CORE_OPTION        String?   @db.VarChar(255)
+  ORDER_NM                 String?   @db.VarChar(255)
+  ORDER_TEL                String?   @db.VarChar(100)
+  PG_ORDERID               String?   @db.VarChar(255)
+  PG_PAYMENT_KEY           String?   @db.VarChar(255)
+  PG_PAYMENT_TYPE          String?   @db.VarChar(255)
+  PG_PAYMENT_AMOUNT        String?   @db.VarChar(255)
+  ORDER_CORE_PROD_SID      String?   @db.VarChar(255)
+  ORDER_CORE_PROD_CATECODE String?   @db.VarChar(255)
+  ORDER_LOGIS_NM           String?   @db.VarChar(20)
+  ORDER_LOGIS_NO           String?   @db.VarChar(20)
+  CASH_RECEIPT_TYPE        String?   @db.VarChar(10)
+  CASH_RECEIPT_NO          String?   @db.VarChar(20)
+  CASH_DEPOSITOR_NAME      String?   @db.VarChar(20)
+  ORDER_USE_POINT          Int?
+  ORDER_LOGIS_AMT          Int?      @default(3000)
+  ORDER_MEMO               String?   @db.Text
+  ORDER_TITLE              String?   @db.VarChar(100)
+}
+
+model tb_ordering_erp {
+  ORDERING_NO        String    @id @db.VarChar(50)
+  ORDERING_REGDATE   DateTime? @db.DateTime(0)
+  ORDERING_CUSTOMER  String?   @db.VarChar(100)
+  ORDERING_NM        String?   @db.VarChar(100)
+  ORDERING_PAPER     String?   @db.VarChar(100)
+  ORDERING_SIZE      String?   @db.VarChar(100)
+  ORDERING_SIDE      String?   @db.VarChar(100)
+  ORDERING_FINISHING String?   @db.VarChar(100)
+  ORDERING_QTY       String?   @db.VarChar(100)
+  ORDERING_COMDATE   DateTime? @db.DateTime(0)
+  ORDERING_STATUS    String?   @db.VarChar(100)
+  ORDERING_DETAIL    String?   @db.Text
+  ORDERING_ADDRESS   String?   @db.VarChar(100)
+  ORDERING_REC       String?   @db.VarChar(100)
+  ORDERING_SENDER    String?   @db.VarChar(100)
+  ORDERING_RECTEL    String?   @db.VarChar(100)
+  ORDERING_DEL       String?   @default("N") @db.VarChar(100)
+  ORDERING_LAST_USER String?   @db.VarChar(10)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tb_ordering_erp_comment {
+  ORDERING_CMT_NO       Int
+  ORDERING_NO           Int?
+  ORDERING_CMT_WHITER   String?   @db.VarChar(100)
+  ORDERING_CMT_CONTENT  String?   @db.VarChar(100)
+  ORDERING_CMT_REGDATE  DateTime? @db.DateTime(0)
+  ORDERING_CMT_MODIDATE DateTime? @db.DateTime(0)
+
+  @@ignore
+}
+
+model tb_ordering_erp_log {
+  EPR_LOG_SID     String    @id @db.VarChar(50)
+  ORDERING_NO     String?   @db.VarChar(50)
+  ERP_LOG_CONTEXT String?   @db.Text
+  ERP_LOG_REGDATE DateTime? @db.DateTime(0)
+}
+
+model tb_paper {
+  PAPER_SID      String    @id @db.VarChar(255)
+  PAPER_CATE     String?   @db.VarChar(100)
+  PAPER_NM       String?   @db.VarChar(255)
+  PAPER_WEIGHT   String?   @db.Text
+  PAPER_QTY      String?   @db.Text
+  PAPER_AMT      String?   @db.Text
+  PAPER_REGDATE  DateTime? @db.DateTime(0)
+  PAPER_MODIDATE DateTime? @db.DateTime(0)
+  PAPER_DELETE   String?   @default("N") @db.VarChar(1)
+  PAPER_PRIORITY Int?
+}
+
+model tb_paper_price {
+  PAPER_PRICE_SID      String    @id @db.VarChar(255)
+  PAPER_PRICE_NM       String?   @db.VarChar(20)
+  PAPER_PRICE_WEIGHT   String?   @db.VarChar(20)
+  PAPER_PRICE_PRICE    Int?
+  PAPER_PRICE_REGDATE  DateTime? @db.DateTime(0)
+  PAPER_PRICE_MODIDATE DateTime? @db.DateTime(0)
+  PAPER_PRICE_DELETE   String?   @default("N") @db.VarChar(1)
+}
+
+model tb_point {
+  POINT_SID    String    @id @db.VarChar(255)
+  USER_ID      String?   @db.VarChar(255)
+  USER_EMAIL   String?   @db.VarChar(255)
+  POINT_AMOUNT Int?
+  POINT_TYPE   String?   @db.VarChar(100)
+  POINT_DESC   String?   @db.VarChar(100)
+  ORDER_SID    String?   @db.VarChar(255)
+  POINT_DATE   DateTime? @db.DateTime(0)
+}
+
+model tb_product {
+  PROD_SID           String    @id @db.VarChar(255)
+  PROD_CATECODE      String?   @db.VarChar(255)
+  PROD_NM            String?   @db.Text
+  PROD_PRIORITY      Int?
+  PROD_DESC          String?   @db.Text
+  PROD_SHOW          Int?
+  PROD_DETAIL        String?   @db.VarChar(255)
+  PROD_NOTI          String?   @db.VarChar(255)
+  PROD_CONTENT       String?   @db.LongText
+  PROD_DELCODE       Int?
+  PROD_OPTIONS       String?   @db.Text
+  PROD_MAIN          String?   @db.VarChar(1)
+  PROD_MAIN_PRIORITY Int?
+  SEO_PRICE          Int?      @default(0)
+  DUAL_CATE_CODE     String?   @db.VarChar(255)
+  PROD_HIT           Int?
+  PROD_REGDATE       DateTime? @default(now()) @db.DateTime(0)
+  PROD_MODIDATE      DateTime? @db.DateTime(0)
+}
+
+model tb_product_image {
+  IMG_SID        String  @id @db.VarChar(255)
+  PROD_SID       String  @db.VarChar(255)
+  IMAGE_LOCATION String? @db.LongText
+  IMAGE_PRIORITY Int?
+  IMAGE_CATE     String? @db.VarChar(255)
+}
+
+model tb_product_option {
+  PROD_OPTION_SID String @id @db.VarChar(255)
+  OPTION_SID      String @db.VarChar(255)
+  PROD_SID        String @db.VarChar(255)
+}
+
+model tb_product_paper {
+  PROD_PAPER_SID String @id @db.VarChar(255)
+  PAPER_SID      String @db.VarChar(255)
+  PROD_SID       String @db.VarChar(255)
+}
+
+model tb_product_use_paper {
+  USE_PAPER_SID     String    @id @db.VarChar(255)
+  PROD_SID          String?   @db.VarChar(255)
+  USE_PAPER_NM      String?   @db.VarChar(20)
+  USE_PAPER_SIZE    Int?
+  USE_PAPER_TYPE    String?   @db.VarChar(20)
+  USE_PAPER_ORDERBY Float?
+  USE_PAPER_USE     String?   @default("Y") @db.VarChar(1)
+  USE_PAPER_DATE    DateTime? @default(now()) @db.DateTime(0)
+
+  @@index([PROD_SID], map: "tb_product_use_paper_tb_product_FK")
+}
+
+model tb_review {
+  REVIEW_SID      Int       @id @default(autoincrement())
+  ORDER_SID       String    @db.VarChar(255)
+  USER_ID         String    @db.VarChar(255)
+  REVIEW_TITLE    String?   @db.VarChar(255)
+  REVIEW_CONTENT  String?   @db.Text
+  REVIEW_HIT      Int?
+  REVIEW_REGDATE  DateTime? @default(now()) @db.DateTime(0)
+  REVIEW_MODIDATE DateTime? @db.DateTime(0)
+  CATE_SID        String?   @db.VarChar(255)
+  PROD_SID        String?   @db.VarChar(255)
+  REVIEW_STAR     Int?
+  REVIEW_SUBTITLE String?   @db.Text
+  REVIEW_SHOW     Int?      @default(1)
+}
+
+model tb_self_estimate {
+  ESTIMATE_SID      String    @id @db.VarChar(100)
+  ESTIMATE_TITLE    String?   @db.VarChar(100)
+  ESTIMATE_MANAGER  String?   @db.VarChar(100)
+  ESTIMATE_TEL      String?   @db.VarChar(100)
+  ESTIMATE_CONTENT  String?   @db.Text
+  ESTIMATE_FILEURL  String?   @db.Text
+  ESTIMATE_REGDATE  DateTime? @db.DateTime(0)
+  ESTIMATE_ANSWER   String?   @db.VarChar(100)
+  ESTIMATE_PRICE    Int?
+  ESTIMATE_USER_ID  String?   @db.VarChar(255)
+  ESTIMATE_FILENAME String?   @db.VarChar(100)
+  ESTIMATE_STATUS   String?   @default("미답변") @db.VarChar(10)
+}
+
+model tb_size_price {
+  SIZE_PRICE_SID      String    @id @db.VarChar(255)
+  SIZE_PRICE_NM       String?   @db.VarChar(20)
+  SIZE_PRICE_MULTI    Float?
+  SIZE_PRICE_REGDATE  DateTime? @db.DateTime(0)
+  SIZE_PRICE_MODIDATE DateTime? @db.DateTime(0)
+  SIZE_PRICE_DELETE   String?   @default("N") @db.VarChar(1)
+}
+
+model tb_token {
+  USER_ID String  @id @db.VarChar(255)
+  TOKEN   String? @db.VarChar(255)
+}
+
+model tb_unit_price {
+  UNIT_PRICE_SID      String    @id @db.VarChar(255)
+  UNIT_PRICE_CATE     String?   @db.VarChar(20)
+  UNIT_PRICE_UNIT     Int?
+  UNIT_PRICE_MULTI    Float?
+  UNIT_PRICE_REGDATE  DateTime? @db.DateTime(0)
+  UNIT_PRICE_MODIDATE DateTime? @db.DateTime(0)
+  UNIT_PRICE_DELETE   String?   @default("N") @db.VarChar(1)
+}
+
+model tb_user {
+  USER_ID              String    @id @db.VarChar(255)
+  USER_EMAIL           String?   @db.VarChar(255)
+  USER_PW              String?   @db.Text
+  USER_NM              String    @db.VarChar(20)
+  USER_TEL0            String?   @db.VarChar(20)
+  USER_TEL1            String?   @db.VarChar(20)
+  USER_POINT           Int?
+  USER_GRADE           Int?      @default(1)
+  USER_LAST_LOGIN      DateTime? @db.DateTime(0)
+  USER_IP              String?   @db.VarChar(20)
+  LOGIN_CNT            Int?
+  USER_AGE             String?   @db.VarChar(20)
+  USER_GENDER          String?   @db.VarChar(20)
+  USER_NICKNAME        String?   @db.VarChar(100)
+  USER_BRITH           String?   @db.VarChar(20)
+  SNS_TYPE             String?   @db.VarChar(20)
+  USER_PATH            String?   @db.VarChar(20)
+  AGREE_MARKETING      String?   @default("N") @db.VarChar(1)
+  AGREE_MARKETING_DATE DateTime? @db.DateTime(0)
+  USER_REGDATE         DateTime? @db.DateTime(0)
+  DELI_CODE            String?   @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model test {
+  PROD_NM String? @db.VarChar(100)
+  PRICE   Json?
+
+  @@ignore
+}
+
+model toss_order_req {
+  order_id   String    @id @db.VarChar(100)
+  amount     Int?
+  user_id    String?   @db.VarChar(255)
+  user_email String?   @db.VarChar(255)
+  item_sids  String?   @db.VarChar(255)
+  regdate    DateTime? @default(now()) @db.DateTime(0)
+}
