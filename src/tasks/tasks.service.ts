@@ -9,29 +9,29 @@ export class TasksService {
 
   async create(createTasksDto: CreateTasksDto) {
     const now = new Date();
-    return this.prisma.tb_admin_task.create({
+    return this.prisma.tb_task.create({
       data: {
         TASK_KEY: createTasksDto.taskKey,
         ADMIN_KEY: createTasksDto.adminKey,
         TASK_TITLE: createTasksDto.taskTitle,
         TASK_DESC: createTasksDto.taskDesc,
         TASK_DETAIL: createTasksDto.taskDetail,
-        CREATE_AT: now,
+        CREATED_AT: now,
         UPDATED_AT: now,
       },
     });
   }
 
   async findAll() {
-    return this.prisma.tb_admin_task.findMany({
+    return this.prisma.tb_task.findMany({
       orderBy: {
-        CREATE_AT: 'desc',
+        CREATED_AT: 'desc',
       },
     });
   }
 
   async findOne(id: string) {
-    const task = await this.prisma.tb_admin_task.findUnique({
+    const task = await this.prisma.tb_task.findUnique({
       where: {
         TASK_KEY: id,
       },
@@ -47,7 +47,7 @@ export class TasksService {
   async update(id: string, updateTasksDto: UpdateTasksDto) {
     const task = await this.findOne(id);
 
-    return this.prisma.tb_admin_task.update({
+    return this.prisma.tb_task.update({
       where: {
         TASK_KEY: id,
       },
@@ -63,7 +63,7 @@ export class TasksService {
   async remove(id: string) {
     const task = await this.findOne(id);
 
-    return this.prisma.tb_admin_task.delete({
+    return this.prisma.tb_task.delete({
       where: {
         TASK_KEY: id,
       },

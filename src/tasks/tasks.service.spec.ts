@@ -8,7 +8,7 @@ describe('TasksService', () => {
   let prismaService: PrismaService;
 
   const mockPrismaService = {
-    tb_admin_task: {
+    tb_task: {
       create: jest.fn(),
       findMany: jest.fn(),
       findUnique: jest.fn(),
@@ -56,22 +56,22 @@ describe('TasksService', () => {
         TASK_TITLE: '테스트 태스크',
         TASK_DESC: '테스트 설명',
         TASK_DETAIL: { priority: 'high' },
-        CREATE_AT: expect.any(Date),
+        CREATED_AT: expect.any(Date),
         UPDATED_AT: expect.any(Date),
       };
 
-      mockPrismaService.tb_admin_task.create.mockResolvedValue(expectedTask);
+      mockPrismaService.tb_task.create.mockResolvedValue(expectedTask);
 
       const result = await service.create(createTasksDto);
 
-      expect(mockPrismaService.tb_admin_task.create).toHaveBeenCalledWith({
+      expect(mockPrismaService.tb_task.create).toHaveBeenCalledWith({
         data: {
           TASK_KEY: 'TASK001',
           ADMIN_KEY: 'ADMIN001',
           TASK_TITLE: '테스트 태스크',
           TASK_DESC: '테스트 설명',
           TASK_DETAIL: { priority: 'high' },
-          CREATE_AT: expect.any(Date),
+          CREATED_AT: expect.any(Date),
           UPDATED_AT: expect.any(Date),
         },
       });
@@ -87,7 +87,7 @@ describe('TasksService', () => {
           ADMIN_KEY: 'ADMIN001',
           TASK_TITLE: '태스크 1',
           TASK_DESC: '설명 1',
-          CREATE_AT: new Date(),
+          CREATED_AT: new Date(),
           UPDATED_AT: new Date(),
         },
         {
@@ -95,18 +95,18 @@ describe('TasksService', () => {
           ADMIN_KEY: 'ADMIN001',
           TASK_TITLE: '태스크 2',
           TASK_DESC: '설명 2',
-          CREATE_AT: new Date(),
+          CREATED_AT: new Date(),
           UPDATED_AT: new Date(),
         },
       ];
 
-      mockPrismaService.tb_admin_task.findMany.mockResolvedValue(expectedTasks);
+      mockPrismaService.tb_task.findMany.mockResolvedValue(expectedTasks);
 
       const result = await service.findAll();
 
-      expect(mockPrismaService.tb_admin_task.findMany).toHaveBeenCalledWith({
+      expect(mockPrismaService.tb_task.findMany).toHaveBeenCalledWith({
         orderBy: {
-          CREATE_AT: 'desc',
+          CREATED_AT: 'desc',
         },
       });
       expect(result).toEqual(expectedTasks);
@@ -121,17 +121,15 @@ describe('TasksService', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '테스트 태스크',
         TASK_DESC: '테스트 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
-      mockPrismaService.tb_admin_task.findUnique.mockResolvedValue(
-        expectedTask,
-      );
+      mockPrismaService.tb_task.findUnique.mockResolvedValue(expectedTask);
 
       const result = await service.findOne(taskId);
 
-      expect(mockPrismaService.tb_admin_task.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.tb_task.findUnique).toHaveBeenCalledWith({
         where: {
           TASK_KEY: taskId,
         },
@@ -141,7 +139,7 @@ describe('TasksService', () => {
 
     it('should throw NotFoundException when task not found', async () => {
       const taskId = 'NONEXISTENT';
-      mockPrismaService.tb_admin_task.findUnique.mockResolvedValue(null);
+      mockPrismaService.tb_task.findUnique.mockResolvedValue(null);
 
       await expect(service.findOne(taskId)).rejects.toThrow(NotFoundException);
       await expect(service.findOne(taskId)).rejects.toThrow(
@@ -163,7 +161,7 @@ describe('TasksService', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '기존 태스크',
         TASK_DESC: '기존 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
@@ -174,14 +172,12 @@ describe('TasksService', () => {
         UPDATED_AT: expect.any(Date),
       };
 
-      mockPrismaService.tb_admin_task.findUnique.mockResolvedValue(
-        existingTask,
-      );
-      mockPrismaService.tb_admin_task.update.mockResolvedValue(updatedTask);
+      mockPrismaService.tb_task.findUnique.mockResolvedValue(existingTask);
+      mockPrismaService.tb_task.update.mockResolvedValue(updatedTask);
 
       const result = await service.update(taskId, updateTasksDto);
 
-      expect(mockPrismaService.tb_admin_task.update).toHaveBeenCalledWith({
+      expect(mockPrismaService.tb_task.update).toHaveBeenCalledWith({
         where: {
           TASK_KEY: taskId,
         },
@@ -204,18 +200,16 @@ describe('TasksService', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '삭제할 태스크',
         TASK_DESC: '삭제할 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
-      mockPrismaService.tb_admin_task.findUnique.mockResolvedValue(
-        existingTask,
-      );
-      mockPrismaService.tb_admin_task.delete.mockResolvedValue(existingTask);
+      mockPrismaService.tb_task.findUnique.mockResolvedValue(existingTask);
+      mockPrismaService.tb_task.delete.mockResolvedValue(existingTask);
 
       const result = await service.remove(taskId);
 
-      expect(mockPrismaService.tb_admin_task.delete).toHaveBeenCalledWith({
+      expect(mockPrismaService.tb_task.delete).toHaveBeenCalledWith({
         where: {
           TASK_KEY: taskId,
         },

@@ -13,7 +13,7 @@ export class OptionsService {
       data: {
         OPTION_KEY: createOptionDto.optionKey,
         OPTION_TITLE: createOptionDto.optionTitle,
-        CREATE_AT: now,
+        CREATED_AT: now,
         UPDATED_AT: now,
       },
     });
@@ -22,7 +22,7 @@ export class OptionsService {
   async findAll() {
     return this.prisma.tb_task_option.findMany({
       orderBy: {
-        CREATE_AT: 'desc',
+        CREATED_AT: 'desc',
       },
     });
   }
@@ -66,7 +66,7 @@ export class OptionsService {
         tb_task_option_detail: true,
       },
       orderBy: {
-        CREATE_AT: 'desc',
+        CREATED_AT: 'desc',
       },
     });
   }

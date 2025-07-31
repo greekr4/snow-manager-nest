@@ -4,6 +4,6 @@ export class Task {
   TASK_TITLE?: string;
   TASK_DESC?: string;
   TASK_DETAIL?: any;
-  CREATE_AT?: Date;
+  CREATED_AT?: Date;
   UPDATED_AT?: Date;
 }

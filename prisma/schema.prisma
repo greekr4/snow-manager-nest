@@ -852,32 +852,20 @@ model toss_order_req {
   regdate    DateTime? @default(now()) @db.DateTime(0)
 }
 
-model tb_admin_task {
-  TASK_KEY         String    @id @db.VarChar(20)
-  ADMIN_KEY        String    @db.VarChar(20)
-  TASK_TITLE       String?   @db.VarChar(20)
-  TASK_DESC        String?   @db.VarChar(255)
-  TASK_DETAIL      Json?
-  TASK_PRIORITY    String?   @db.VarChar(10)
-  TASK_PROGRESSING String?   @db.VarChar(10)
-  CREATE_AT        DateTime?
-  UPDATED_AT       DateTime?
-}
-
 model tb_admin_user {
   ADMIN_KEY      String    @id @db.VarChar(20)
   ADMIN_ID       String?   @db.VarChar(20)
   ADMIN_PW       String?   @db.VarChar(20)
   ADMIN_NAME     String?   @db.VarChar(10)
   ADMIN_POSITION String?   @db.VarChar(10)
-  CREATE_AT      DateTime?
+  CREATED_AT     DateTime?
   UPDATED_AT     DateTime?
 }
 
 model tb_task_option {
   OPTION_KEY             String                   @id @db.VarChar(20)
   OPTION_TITLE           String?                  @db.VarChar(20)
-  CREATE_AT              DateTime?
+  CREATED_AT             DateTime?
   UPDATED_AT             DateTime?
   tb_task_option_company tb_task_option_company[]
   tb_task_option_detail  tb_task_option_detail[]
@@ -888,7 +876,7 @@ model tb_task_option_company {
   OPTION_KEY     String         @db.VarChar(20)
   COMPANY_NAME   String?        @db.VarChar(20)
   COMPANY_TEL    String?        @db.VarChar(20)
-  CREATE_AT      DateTime?
+  CREATED_AT     DateTime?
   UPDATED_AT     DateTime?
   tb_task_option tb_task_option @relation(fields: [OPTION_KEY], references: [OPTION_KEY], onDelete: NoAction, onUpdate: NoAction, map: "FK_TB_TASK_OPTION_TO_TB_TASK_OPTION_COMPANY_1")
 
@@ -900,10 +888,31 @@ model tb_task_option_detail {
   DETAIL_KEY     String         @db.VarChar(20)
   OPTION_KEY     String         @db.VarChar(20)
   DETAIL_NAME    String?        @db.VarChar(50)
-  CREATE_AT      DateTime?
+  CREATED_AT     DateTime?
   UPDATED_AT     DateTime?
   tb_task_option tb_task_option @relation(fields: [OPTION_KEY], references: [OPTION_KEY], onDelete: NoAction, onUpdate: NoAction, map: "FK_TB_TASK_OPTION_TO_TB_TASK_OPTION_DETAIL_1")
 
   @@id([DETAIL_KEY, OPTION_KEY])
   @@index([OPTION_KEY], map: "FK_TB_TASK_OPTION_TO_TB_TASK_OPTION_DETAIL_1")
+}
+
+model tb_task {
+  TASK_KEY         String    @id @db.VarChar(20)
+  ADMIN_KEY        String    @db.VarChar(20)
+  TASK_TITLE       String?   @db.VarChar(20)
+  TASK_DESC        String?   @db.VarChar(255)
+  TASK_DETAIL      Json?
+  TASK_PRIORITY    String?   @db.VarChar(10)
+  TASK_PROGRESSING String?   @db.VarChar(10)
+  CREATED_AT       DateTime?
+  UPDATED_AT       DateTime?
+}
+
+model tb_task_comment {
+  COMMENT_KEY     String    @id @db.VarChar(20)
+  TASK_KEY        String    @db.VarChar(20)
+  ADMIN_KEY       String    @db.VarChar(20)
+  COMMENT_CONTENT String?   @db.VarChar(255)
+  CREATED_AT      DateTime?
+  UPDATED_AT      DateTime?
 }

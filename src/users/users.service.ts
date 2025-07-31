@@ -16,7 +16,7 @@ export class UsersService {
         ADMIN_PW: createUserDto.adminPw,
         ADMIN_NAME: createUserDto.adminName,
         ADMIN_POSITION: createUserDto.adminPosition,
-        CREATE_AT: now,
+        CREATED_AT: now,
         UPDATED_AT: now,
       },
     });
@@ -25,7 +25,7 @@ export class UsersService {
   async findAll() {
     return this.prisma.tb_admin_user.findMany({
       orderBy: {
-        CREATE_AT: 'desc',
+        CREATED_AT: 'desc',
       },
     });
   }
