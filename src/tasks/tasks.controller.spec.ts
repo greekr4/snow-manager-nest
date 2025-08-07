@@ -53,10 +53,13 @@ describe('TasksController', () => {
   describe('create', () => {
     it('should create a new task', async () => {
       const createTasksDto = {
-        taskKey: 'TASK001',
         adminKey: 'ADMIN001',
         taskTitle: '새 태스크',
-        taskDesc: '새 설명',
+        taskCompany: '새 회사',
+        taskPriority: '새 우선순위',
+        taskProgressing: '새 진행상태',
+        taskOrderDate: new Date(),
+        taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
       };
 
@@ -102,7 +105,7 @@ describe('TasksController', () => {
 
       mockTasksService.findAll.mockResolvedValue(expectedTasks);
 
-      const result = await controller.findAll();
+      const result = await controller.findAll({});
 
       expect(service.findAll).toHaveBeenCalled();
       expect(result).toEqual(expectedTasks);

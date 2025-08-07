@@ -21,6 +21,10 @@ export class OptionsService {
 
   async findAll() {
     return this.prisma.tb_task_option.findMany({
+      include: {
+        tb_task_option_company: true,
+        tb_task_option_detail: true,
+      },
       orderBy: {
         CREATED_AT: 'desc',
       },

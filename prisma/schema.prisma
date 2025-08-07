@@ -860,10 +860,16 @@ model tb_admin_user {
   ADMIN_POSITION String?   @db.VarChar(10)
   CREATED_AT     DateTime?
   UPDATED_AT     DateTime?
+  
+  // Relations
+  tb_task_log    tb_task_log[]
+  tb_task_comment tb_task_comment[]
+  tb_task         tb_task[] 
 }
 
 model tb_task_option {
   OPTION_KEY             String                   @id @db.VarChar(20)
+  OPTION_CATEGORY        String?                  @db.VarChar(20)
   OPTION_TITLE           String?                  @db.VarChar(20)
   CREATED_AT             DateTime?
   UPDATED_AT             DateTime?
@@ -897,15 +903,22 @@ model tb_task_option_detail {
 }
 
 model tb_task {
-  TASK_KEY         String    @id @db.VarChar(20)
-  ADMIN_KEY        String    @db.VarChar(20)
-  TASK_TITLE       String?   @db.VarChar(20)
-  TASK_DESC        String?   @db.VarChar(255)
-  TASK_DETAIL      Json?
-  TASK_PRIORITY    String?   @db.VarChar(10)
-  TASK_PROGRESSING String?   @db.VarChar(10)
-  CREATED_AT       DateTime?
-  UPDATED_AT       DateTime?
+  TASK_KEY           String    @id @db.VarChar(20)
+  ADMIN_KEY          String    @db.VarChar(20)
+  TASK_TITLE         String?   @db.VarChar(20)
+  TASK_COMPANY       String?   @db.VarChar(50)
+  TASK_PRIORITY      String?   @db.VarChar(10)
+  TASK_PROGRESSING   String?   @db.VarChar(10)
+  TASK_ORDER_DATE    DateTime?
+  TASK_DELIVERY_DATE DateTime?
+  TASK_DETAIL        Json?
+  CREATED_AT         DateTime?
+  UPDATED_AT         DateTime?
+  
+  // Relations
+  tb_task_log        tb_task_log[]
+  tb_task_comment    tb_task_comment[]
+  tb_admin_user      tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
 }
 
 model tb_task_comment {
@@ -915,4 +928,21 @@ model tb_task_comment {
   COMMENT_CONTENT String?   @db.VarChar(255)
   CREATED_AT      DateTime?
   UPDATED_AT      DateTime?
+  
+  // Relations
+  tb_task            tb_task      @relation(fields: [TASK_KEY], references: [TASK_KEY])
+  tb_admin_user      tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
+}
+
+model tb_task_log {
+  LOG_KEY     String    @id @db.VarChar(20)
+  TASK_KEY    String    @db.VarChar(20)
+  ADMIN_KEY   String    @db.VarChar(20)
+  LOG_CONTENT String?   @db.VarChar(100)
+  CREATED_AT  DateTime?
+  UPDATED_AT  DateTime?
+  
+  // Relations
+  tb_task        tb_task      @relation(fields: [TASK_KEY], references: [TASK_KEY])
+  tb_admin_user  tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
 }

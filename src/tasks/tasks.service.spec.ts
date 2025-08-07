@@ -43,10 +43,13 @@ describe('TasksService', () => {
   describe('create', () => {
     it('should create a new task', async () => {
       const createTasksDto = {
-        taskKey: 'TASK001',
         adminKey: 'ADMIN001',
         taskTitle: '테스트 태스크',
-        taskDesc: '테스트 설명',
+        taskCompany: '테스트 회사',
+        taskPriority: '높음',
+        taskProgressing: '진행중',
+        taskOrderDate: new Date(),
+        taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
       };
 
