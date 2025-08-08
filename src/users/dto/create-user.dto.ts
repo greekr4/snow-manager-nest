@@ -4,4 +4,6 @@ export class CreateUserDto {
   adminPw?: string;
   adminName?: string;
   adminPosition?: string;
+  pushToken?: string;
+  pushEnabled?: boolean;
 }

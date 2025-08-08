@@ -16,7 +16,7 @@ export class UsersService {
         ADMIN_PW: createUserDto.adminPw,
         ADMIN_NAME: createUserDto.adminName,
         ADMIN_POSITION: createUserDto.adminPosition,
-        CREATE_AT: now,
+        CREATED_AT: now,
         UPDATED_AT: now,
       },
     });
@@ -25,9 +25,23 @@ export class UsersService {
   async findAll() {
     return this.prisma.tb_admin_user.findMany({
       orderBy: {
-        CREATE_AT: 'desc',
+        CREATED_AT: 'desc',
       },
     });
+  }
+
+  async findId(adminId: string) {
+    const user = await this.prisma.tb_admin_user.findMany({
+      where: {
+        ADMIN_ID: adminId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${adminId} not found`);
+    }
+
+    return user;
   }
 
   async findOne(id: string) {
@@ -56,6 +70,8 @@ export class UsersService {
         ADMIN_PW: updateUserDto.adminPw,
         ADMIN_NAME: updateUserDto.adminName,
         ADMIN_POSITION: updateUserDto.adminPosition,
+        PUSH_TOKEN: updateUserDto.pushToken,
+        PUSH_ENABLED: updateUserDto.pushEnabled,
         UPDATED_AT: new Date(),
       },
     });

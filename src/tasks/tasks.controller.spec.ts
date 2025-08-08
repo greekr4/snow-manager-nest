@@ -26,7 +26,7 @@ describe('TasksController', () => {
         {
           provide: PrismaService,
           useValue: {
-            tb_admin_task: {
+            tb_task: {
               create: jest.fn(),
               findMany: jest.fn(),
               findUnique: jest.fn(),
@@ -53,10 +53,13 @@ describe('TasksController', () => {
   describe('create', () => {
     it('should create a new task', async () => {
       const createTasksDto = {
-        taskKey: 'TASK001',
         adminKey: 'ADMIN001',
         taskTitle: '새 태스크',
-        taskDesc: '새 설명',
+        taskCompany: '새 회사',
+        taskPriority: '새 우선순위',
+        taskProgressing: '새 진행상태',
+        taskOrderDate: new Date(),
+        taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
       };
 
@@ -66,7 +69,7 @@ describe('TasksController', () => {
         TASK_TITLE: '새 태스크',
         TASK_DESC: '새 설명',
         TASK_DETAIL: { priority: 'high' },
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
@@ -87,7 +90,7 @@ describe('TasksController', () => {
           ADMIN_KEY: 'ADMIN001',
           TASK_TITLE: '태스크 1',
           TASK_DESC: '설명 1',
-          CREATE_AT: new Date(),
+          CREATED_AT: new Date(),
           UPDATED_AT: new Date(),
         },
         {
@@ -95,14 +98,14 @@ describe('TasksController', () => {
           ADMIN_KEY: 'ADMIN001',
           TASK_TITLE: '태스크 2',
           TASK_DESC: '설명 2',
-          CREATE_AT: new Date(),
+          CREATED_AT: new Date(),
           UPDATED_AT: new Date(),
         },
       ];
 
       mockTasksService.findAll.mockResolvedValue(expectedTasks);
 
-      const result = await controller.findAll();
+      const result = await controller.findAll({});
 
       expect(service.findAll).toHaveBeenCalled();
       expect(result).toEqual(expectedTasks);
@@ -117,7 +120,7 @@ describe('TasksController', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '테스트 태스크',
         TASK_DESC: '테스트 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
@@ -143,7 +146,7 @@ describe('TasksController', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '수정된 태스크',
         TASK_DESC: '수정된 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
@@ -164,7 +167,7 @@ describe('TasksController', () => {
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '삭제된 태스크',
         TASK_DESC: '삭제된 설명',
-        CREATE_AT: new Date(),
+        CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };
 
