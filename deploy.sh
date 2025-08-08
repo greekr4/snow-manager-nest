@@ -8,10 +8,11 @@ PM2_NAME="snow-manager"                # PM2 프로세스 이름
 
 cd "$APP_DIR"
 
-echo "[1/5] Git 업데이트"
+echo "[1/5] Git 업데이트 (로컬 변경 무시)"
 git fetch --all
 git checkout "$BRANCH"
-git pull --rebase origin "$BRANCH"
+git reset --hard "origin/$BRANCH"
+git clean -fd
 
 echo "[2/5] 의존성 설치"
 npm ci
