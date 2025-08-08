@@ -26,7 +26,7 @@ export class OptionsService {
         tb_task_option_detail: true,
       },
       orderBy: {
-        CREATED_AT: 'desc',
+        OPTION_PRIORITY: 'asc',
       },
     });
   }

@@ -858,6 +858,8 @@ model tb_admin_user {
   ADMIN_PW       String?   @db.VarChar(20)
   ADMIN_NAME     String?   @db.VarChar(10)
   ADMIN_POSITION String?   @db.VarChar(10)
+  PUSH_TOKEN     String?   @db.VarChar(100)
+  PUSH_ENABLED   Boolean?  @default(true) @db.TinyInt
   CREATED_AT     DateTime?
   UPDATED_AT     DateTime?
   
@@ -871,6 +873,7 @@ model tb_task_option {
   OPTION_KEY             String                   @id @db.VarChar(20)
   OPTION_CATEGORY        String?                  @db.VarChar(20)
   OPTION_TITLE           String?                  @db.VarChar(20)
+  OPTION_PRIORITY        Int?                     @db.Int
   CREATED_AT             DateTime?
   UPDATED_AT             DateTime?
   tb_task_option_company tb_task_option_company[]
@@ -918,7 +921,7 @@ model tb_task {
   // Relations
   tb_task_log        tb_task_log[]
   tb_task_comment    tb_task_comment[]
-  tb_admin_user      tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
+  tb_admin_user      tb_admin_user? @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
 }
 
 model tb_task_comment {
@@ -931,7 +934,7 @@ model tb_task_comment {
   
   // Relations
   tb_task            tb_task      @relation(fields: [TASK_KEY], references: [TASK_KEY])
-  tb_admin_user      tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
+  tb_admin_user      tb_admin_user? @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
 }
 
 model tb_task_log {
@@ -944,5 +947,5 @@ model tb_task_log {
   
   // Relations
   tb_task        tb_task      @relation(fields: [TASK_KEY], references: [TASK_KEY])
-  tb_admin_user  tb_admin_user @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
+  tb_admin_user  tb_admin_user? @relation(fields: [ADMIN_KEY], references: [ADMIN_KEY])
 }

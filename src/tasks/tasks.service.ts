@@ -94,6 +94,9 @@ export class TasksService {
           include: {
             tb_admin_user: true,
           },
+          orderBy: {
+            CREATED_AT: 'desc',
+          },
         },
         tb_admin_user: true,
       },
@@ -118,6 +121,11 @@ export class TasksService {
       },
       data: {
         TASK_TITLE: updateTasksDto.taskTitle,
+        TASK_COMPANY: updateTasksDto.taskCompany,
+        TASK_PRIORITY: updateTasksDto.taskPriority,
+        TASK_PROGRESSING: updateTasksDto.taskProgressing,
+        TASK_ORDER_DATE: updateTasksDto.taskOrderDate,
+        TASK_DELIVERY_DATE: updateTasksDto.taskDeliveryDate,
         TASK_DETAIL: updateTasksDto.taskDetail,
         UPDATED_AT: new Date(),
       },
