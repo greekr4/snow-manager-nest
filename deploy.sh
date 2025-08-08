@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 설정값
 APP_DIR="/home/snow-manager-nest"   # 프로젝트 경로에 맞게 수정
-BRANCH="main"                          # 배포 브랜치
+BRANCH="master"                          # 배포 브랜치
 PM2_NAME="snow-manager"                # PM2 프로세스 이름
 
 cd "$APP_DIR"
