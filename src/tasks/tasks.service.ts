@@ -60,6 +60,9 @@ export class TasksService {
       orderBy: {
         CREATED_AT: 'desc',
       },
+      where: {
+        TASK_DEL: false,
+      },
     });
 
     // 페이지네이션 정보 계산
