@@ -134,6 +134,7 @@ export class TasksService {
         TASK_ORDER_DATE: updateTasksDto.taskOrderDate,
         TASK_DELIVERY_DATE: updateTasksDto.taskDeliveryDate,
         TASK_DETAIL: updateTasksDto.taskDetail,
+        TASK_DEL: updateTasksDto.taskDel === 1 ? true : false,
         UPDATED_AT: new Date(),
       },
     });
