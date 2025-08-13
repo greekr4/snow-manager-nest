@@ -37,6 +37,9 @@ export class TasksService {
       orderBy: {
         CREATED_AT: 'desc',
       },
+      where: {
+        TASK_DEL: false,
+      },
     });
   }
 
@@ -102,6 +105,7 @@ export class TasksService {
       },
       where: {
         TASK_KEY: id,
+        TASK_DEL: false,
       },
     });
 

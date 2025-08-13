@@ -915,6 +915,7 @@ model tb_task {
   TASK_ORDER_DATE    DateTime?
   TASK_DELIVERY_DATE DateTime?
   TASK_DETAIL        Json?
+  TASK_DEL           Boolean? @default(false)
   CREATED_AT         DateTime?
   UPDATED_AT         DateTime?
   
