@@ -7,4 +7,5 @@ export class CreateTasksDto {
   taskOrderDate: Date;
   taskDeliveryDate: Date;
   taskDetail: any;
+  taskDel: number;
 }
