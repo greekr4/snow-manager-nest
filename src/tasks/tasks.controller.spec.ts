@@ -61,6 +61,7 @@ describe('TasksController', () => {
         taskOrderDate: new Date(),
         taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
+        taskThumbnail: 'test.jpg',
         taskDel: 0,
       };
 
@@ -68,8 +69,14 @@ describe('TasksController', () => {
         TASK_KEY: 'TASK001',
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '새 태스크',
-        TASK_DESC: '새 설명',
+        TASK_COMPANY: '새 회사',
+        TASK_PRIORITY: '새 우선순위',
+        TASK_PROGRESSING: '새 진행상태',
+        TASK_ORDER_DATE: new Date(),
+        TASK_DELIVERY_DATE: new Date(),
         TASK_DETAIL: { priority: 'high' },
+        TASK_THUMBNAIL: 'test.jpg',
+        TASK_DEL: 0,
         CREATED_AT: new Date(),
         UPDATED_AT: new Date(),
       };

@@ -51,14 +51,22 @@ describe('TasksService', () => {
         taskOrderDate: new Date(),
         taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
+        taskThumbnail: 'test.jpg',
+        taskDel: 0,
       };
 
       const expectedTask = {
         TASK_KEY: 'TASK001',
         ADMIN_KEY: 'ADMIN001',
         TASK_TITLE: '테스트 태스크',
-        TASK_DESC: '테스트 설명',
+        TASK_COMPANY: '테스트 회사',
+        TASK_PRIORITY: '높음',
+        TASK_PROGRESSING: '진행중',
+        TASK_ORDER_DATE: expect.any(Date),
+        TASK_DELIVERY_DATE: expect.any(Date),
         TASK_DETAIL: { priority: 'high' },
+        TASK_THUMBNAIL: 'test.jpg',
+        TASK_DEL: 0,
         CREATED_AT: expect.any(Date),
         UPDATED_AT: expect.any(Date),
       };
