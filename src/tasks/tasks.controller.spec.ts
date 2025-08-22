@@ -61,6 +61,7 @@ describe('TasksController', () => {
         taskOrderDate: new Date(),
         taskDeliveryDate: new Date(),
         taskDetail: { priority: 'high' },
+        taskDel: 0,
       };
 
       const expectedTask = {
