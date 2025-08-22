@@ -151,18 +151,37 @@ export class TasksService {
   }
 
   async getTaskCounts() {
-    const total = await this.prisma.tb_task.count();
+    const total = await this.prisma.tb_task.count({
+      where: { TASK_DEL: false },
+    });
     const 진행중 = await this.prisma.tb_task.count({
-      where: { TASK_PROGRESSING: '진행중' },
+      where: { TASK_PROGRESSING: '진행중', TASK_DEL: false },
     });
     const 완료 = await this.prisma.tb_task.count({
-      where: { TASK_PROGRESSING: '완료' },
+      where: { TASK_PROGRESSING: '완료', TASK_DEL: false },
     });
 
+    const 보통 = await this.prisma.tb_task.count({
+      where: { TASK_PRIORITY: '보통', TASK_DEL: false },
+    });
+    const 중요 = await this.prisma.tb_task.count({
+      where: { TASK_PRIORITY: '중요', TASK_DEL: false },
+    });
+    const 긴급 = await this.prisma.tb_task.count({
+      where: { TASK_PRIORITY: '긴급', TASK_DEL: false },
+    });
+
+    const del = await this.prisma.tb_task.count({
+      where: { TASK_DEL: true },
+    });
     return {
       total,
       진행중,
       완료,
+      보통,
+      중요,
+      긴급,
+      del,
     };
   }
 }
