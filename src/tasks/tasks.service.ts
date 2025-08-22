@@ -162,13 +162,25 @@ export class TasksService {
     });
 
     const 보통 = await this.prisma.tb_task.count({
-      where: { TASK_PRIORITY: '보통', TASK_DEL: false },
+      where: {
+        TASK_PRIORITY: '보통',
+        TASK_PROGRESSING: '진행중',
+        TASK_DEL: false,
+      },
     });
     const 중요 = await this.prisma.tb_task.count({
-      where: { TASK_PRIORITY: '중요', TASK_DEL: false },
+      where: {
+        TASK_PRIORITY: '중요',
+        TASK_PROGRESSING: '진행중',
+        TASK_DEL: false,
+      },
     });
     const 긴급 = await this.prisma.tb_task.count({
-      where: { TASK_PRIORITY: '긴급', TASK_DEL: false },
+      where: {
+        TASK_PRIORITY: '긴급',
+        TASK_PROGRESSING: '진행중',
+        TASK_DEL: false,
+      },
     });
 
     const del = await this.prisma.tb_task.count({
